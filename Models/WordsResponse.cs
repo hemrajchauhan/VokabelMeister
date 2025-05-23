@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VokabelMeister.Models
 {
-    internal class WordEntry
+    internal class WordsResponse
     {
     }
 }
