@@ -1,7 +1,9 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VokabelMeister.Helpers;
+using VokabelMeister.Models;
 
 namespace VokabelMeister.Services
 {
@@ -17,12 +19,14 @@ namespace VokabelMeister.Services
             };
         }
 
-        public async Task<string> CheckGrammarAsync(string text)
+        public async Task<CheckGrammarResponse?> CheckGrammarAsync(string text)
         {
             var request = new { text };
             var response = await _client.PostAsJsonAsync(ApiConfig.CheckGrammar, request);
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadAsStringAsync();
+
+            var json = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<CheckGrammarResponse>(json);
         }
 
         public async Task<string> TranslateWordAsync(string word)

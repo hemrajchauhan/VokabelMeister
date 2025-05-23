@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Windows.Input;
+using VokabelMeister.Models;
 using VokabelMeister.Services;
+using VokabelMeister.Helpers;
 
 namespace VokabelMeister.ViewModels
 {
@@ -23,6 +26,13 @@ namespace VokabelMeister.ViewModels
             set { _result = value; OnPropertyChanged(); }
         }
 
+        private FormattedString _highlightedResult = new();
+        public FormattedString HighlightedResult
+        {
+            get => _highlightedResult;
+            set { _highlightedResult = value; OnPropertyChanged(); }
+        }
+
         public ICommand CheckGrammarCommand { get; }
 
         public MainPageViewModel()
@@ -33,9 +43,22 @@ namespace VokabelMeister.ViewModels
         public async Task CheckGrammarAsync()
         {
             if (!string.IsNullOrWhiteSpace(InputText))
-                Result = await _apiService.CheckGrammarAsync(InputText);
+            {
+                var grammarResult = await _apiService.CheckGrammarAsync(InputText);
+
+                if (grammarResult?.Matches != null && grammarResult.Matches.Any())
+                {
+                    HighlightedResult = TextHighlighter.HighlightMistakes(InputText, grammarResult.Matches);
+                }
+                else
+                {
+                    HighlightedResult = new FormattedString { Spans = { new Span { Text = "No grammar mistakes found!" } } };
+                }
+            }
             else
+            {
                 Result = "Please enter a sentence.";
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

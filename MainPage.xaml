@@ -14,10 +14,9 @@
             Command="{Binding CheckGrammarCommand}" />
 
         <Label
-            Text="{Binding Result}"
+            FormattedText="{Binding HighlightedResult}"
             Padding="10"
             FontSize="Medium"
-            TextColor="DarkBlue"
             VerticalOptions="CenterAndExpand" />
 
     </VerticalStackLayout>
