@@ -9,5 +9,5 @@
 ## Getting Started
 
 1. Clone this repository and open `VokabelMeister.sln` in Visual Studio 2022+
-2. Set up your backend (see [GermanAI-backend](https://github.com/hemrajchauhan/GermanAI-backend))
+2. Backend is powered via (see [GermanAI-backend](https://github.com/hemrajchauhan/GermanAI-backend))
 3. Build and run on your preferred platform
